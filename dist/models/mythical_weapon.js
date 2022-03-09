@@ -40,38 +40,45 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 exports.__esModule = true;
 exports.MythicalWeaponStore = void 0;
+// @ts-ignore
 var database_1 = __importDefault(require("../database"));
 var MythicalWeaponStore = /** @class */ (function () {
     function MythicalWeaponStore() {
     }
     MythicalWeaponStore.prototype.index = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var sql, res;
+            var conn, sql, res, err_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, database_1["default"].connect()];
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, database_1["default"].connect()];
                     case 1:
-                        _a.sent();
+                        conn = _a.sent();
                         sql = "SELECT * FROM mythical_weapons";
-                        return [4 /*yield*/, database_1["default"].query(sql)];
+                        return [4 /*yield*/, conn.query(sql)];
                     case 2:
                         res = _a.sent();
                         return [2 /*return*/, res.rows];
+                    case 3:
+                        err_1 = _a.sent();
+                        throw new Error("could not connect fetch data from the db ".concat(err_1));
+                    case 4: return [2 /*return*/];
                 }
             });
         });
     };
     MythicalWeaponStore.prototype.create = function (weapon) {
         return __awaiter(this, void 0, void 0, function () {
-            var text, values, res;
+            var conn, text, values, res;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, database_1["default"].connect()];
                     case 1:
-                        _a.sent();
+                        conn = _a.sent();
                         text = "INSERT INTO mythical_weapons(name, type, weight) VALUES($1, $2, $3) RETURNING *";
                         values = [weapon.name, weapon.type, weapon.weight];
-                        return [4 /*yield*/, database_1["default"].query(text, values)];
+                        return [4 /*yield*/, conn.query(text, values)];
                     case 2:
                         res = _a.sent();
                         console.log(res.rows[0]);
